@@ -9,26 +9,25 @@ pipeline {
             }
         }
 
-        stage("Diagnose Jenkins Environment") {
+        stage("Diagnose Python") {
             steps {
-                sh "id"
-                sh "pwd"
-                sh "ls -la /opt/taskflow-venv/bin/python"
-                sh "ls -la /opt/taskflow-venv/bin/python3"
-                sh "/opt/taskflow-venv/bin/python --version"
-                sh "/opt/taskflow-venv/bin/python -m pip --version"
+                sh "which python3 || true"
+                sh "python3 --version || true"
+                sh "python3 -m pip --version || true"
+                sh "ls -la /usr/bin/python3 || true"
+                sh "ls -la /opt || true"
             }
         }
 
         stage("Install Dependencies") {
             steps {
-                sh "/opt/taskflow-venv/bin/python -m pip install -r backend/requirements.txt"
+                sh "python3 -m pip install -r backend/requirements.txt"
             }
         }
 
         stage("Run Tests") {
             steps {
-                sh "/opt/taskflow-venv/bin/python -m pytest -v"
+                sh "python3 -m pytest -v"
             }
         }
 
