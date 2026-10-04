@@ -11,13 +11,13 @@ pipeline {
 
         stage("Install Dependencies") {
             steps {
-                sh "python -m pip install -r backend/requirements.txt"
+                sh "/opt/taskflow-venv/bin/python -m pip install -r backend/requirements.txt"
             }
         }
 
         stage("Run Tests") {
             steps {
-                sh "python -m pytest -v"
+                sh "/opt/taskflow-venv/bin/python -m pytest -v"
             }
         }
 
