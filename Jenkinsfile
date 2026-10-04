@@ -11,15 +11,15 @@ pipeline {
 
         stage("Install Dependencies") {
             steps {
-                bat "python -m pip install --upgrade pip"
-                bat "pip install -r backend/requirements.txt"
-                bat "pip install pytest"
+                sh "python3 -m pip install --upgrade pip"
+                sh "pip3 install -r backend/requirements.txt"
+                sh "pip3 install pytest"
             }
         }
 
         stage("Run Tests") {
             steps {
-                bat "set PYTHONPATH=backend&& pytest -v"
+                sh "PYTHONPATH=backend pytest -v"
             }
         }
 
