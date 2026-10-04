@@ -10,22 +10,16 @@ pipeline {
             }
         }
 
-        stage('Setup Python') {
+        stage('Environment Check') {
             steps {
-                sh '''
-                    python3 -m venv .ci-venv
-                    .ci-venv/bin/python -m pip install --upgrade pip
-                    .ci-venv/bin/pip install -r backend/requirements.txt
-                    .ci-venv/bin/pip install pytest
-                '''
+                sh 'python3 --version'
+                sh 'python3 -c "import flask, flask_sqlalchemy, flask_cors, pytest; print(\"Dependencies OK\")"'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh '''
-                    PYTHONPATH=backend .ci-venv/bin/python -m pytest -v
-                '''
+                sh 'PYTHONPATH=backend python3 -m pytest -v'
             }
         }
 
