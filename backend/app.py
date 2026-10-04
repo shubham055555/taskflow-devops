@@ -31,6 +31,10 @@ with app.app_context():
     db.create_all()
 
 
+# Allowed task statuses
+ALLOWED_STATUSES = ["pending", "in-progress", "completed"]
+
+
 # Home API
 @app.route("/")
 def home():
@@ -57,10 +61,18 @@ def create_task():
             "error": "Title is required"
         }), 400
 
+    status = data.get("status", "pending")
+
+    if status not in ALLOWED_STATUSES:
+        return jsonify({
+            "error": "Invalid status",
+            "allowed_statuses": ALLOWED_STATUSES
+        }), 400
+
     task = Task(
         title=data["title"],
         description=data.get("description", ""),
-        status=data.get("status", "pending")
+        status=status
     )
 
     db.session.add(task)
@@ -104,6 +116,12 @@ def update_task(task_id):
         }), 404
 
     data = request.get_json()
+
+    if "status" in data and data["status"] not in ALLOWED_STATUSES:
+        return jsonify({
+            "error": "Invalid status",
+            "allowed_statuses": ALLOWED_STATUSES
+        }), 400
 
     if "title" in data:
         task.title = data["title"]
