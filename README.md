@@ -1,12 +1,13 @@
 # TaskFlow - DevOps Capstone Project
 
-A cloud-native Task Management System demonstrating an end-to-end DevOps pipeline.
+TaskFlow is a DevOps-based Task Management System.
 
 ## Features
 
-- User task management
-- CRUD REST APIs
-- Task status validation
-- Automated testing
-- Docker containerization
-- Kubernetes deployment
+- CRUD Task Management
+- Task Status Validation
+- REST APIs
+- Automated Pytest Testing
+- CI/CD with Jenkins
+- Docker Containerization
+- Kubernetes Deployment
