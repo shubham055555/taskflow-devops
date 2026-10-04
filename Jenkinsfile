@@ -9,6 +9,17 @@ pipeline {
             }
         }
 
+        stage("Diagnose Jenkins Environment") {
+            steps {
+                sh "id"
+                sh "pwd"
+                sh "ls -la /opt/taskflow-venv/bin/python"
+                sh "ls -la /opt/taskflow-venv/bin/python3"
+                sh "/opt/taskflow-venv/bin/python --version"
+                sh "/opt/taskflow-venv/bin/python -m pip --version"
+            }
+        }
+
         stage("Install Dependencies") {
             steps {
                 sh "/opt/taskflow-venv/bin/python -m pip install -r backend/requirements.txt"
