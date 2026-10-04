@@ -10,16 +10,22 @@ pipeline {
             }
         }
 
-        stage('Environment Check') {
+        stage('Setup Python') {
             steps {
-                sh '/opt/taskflow-venv/bin/python --version'
-                sh '/opt/taskflow-venv/bin/python -c "import flask, flask_sqlalchemy, flask_cors, pytest; print(\"Dependencies OK\")"'
+                sh '''
+                    python3 -m venv .ci-venv
+                    .ci-venv/bin/python -m pip install --upgrade pip
+                    .ci-venv/bin/pip install -r backend/requirements.txt
+                    .ci-venv/bin/pip install pytest
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'PYTHONPATH=backend /opt/taskflow-venv/bin/python -m pytest -v'
+                sh '''
+                    PYTHONPATH=backend .ci-venv/bin/python -m pytest -v
+                '''
             }
         }
 
