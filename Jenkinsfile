@@ -1,11 +1,6 @@
 pipeline {
 
-    agent {
-        docker {
-            image 'python:3.13-slim'
-            args '-u 0:0'
-        }
-    }
+    agent any
 
     stages {
 
@@ -17,14 +12,25 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'python -m pip install --no-cache-dir -r backend/requirements.txt'
-                sh 'python -m pip install --no-cache-dir pytest'
+                sh '''
+                    docker run --rm \
+                      -v "$PWD:/workspace" \
+                      -w /workspace \
+                      python:3.13-slim \
+                      sh -c "pip install --no-cache-dir -r backend/requirements.txt && pip install --no-cache-dir pytest"
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'PYTHONPATH=backend python -m pytest -v'
+                sh '''
+                    docker run --rm \
+                      -v "$PWD:/workspace" \
+                      -w /workspace \
+                      python:3.13-slim \
+                      sh -c "pip install --no-cache-dir -r backend/requirements.txt pytest && PYTHONPATH=backend pytest -v"
+                '''
             }
         }
 
@@ -36,7 +42,6 @@ pipeline {
     }
 
     post {
-
         success {
             echo 'TaskFlow CI Pipeline completed successfully!'
         }
