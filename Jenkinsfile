@@ -9,13 +9,25 @@ pipeline {
             }
         }
 
-        stage('Setup Python Dependencies') {
+        stage('Install pip') {
             steps {
                 sh '''
-                    python3 -m pip --version
+                    python3 --version
 
+                    curl -sS https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+
+                    python3 /tmp/get-pip.py \
+                        --break-system-packages
+
+                    python3 -m pip --version
+                '''
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh '''
                     python3 -m pip install \
-                        --user \
                         --break-system-packages \
                         -r backend/requirements.txt \
                         pytest
