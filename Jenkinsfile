@@ -9,23 +9,24 @@ pipeline {
             }
         }
 
-        stage("Install Dependencies") {
+        stage("Setup Python Environment") {
             steps {
-                sh "python3 -m pip install --upgrade pip"
-                sh "pip3 install -r backend/requirements.txt"
-                sh "pip3 install pytest"
+                sh "python3 -m venv .venv"
+                sh ".venv/bin/python -m pip install --upgrade pip"
+                sh ".venv/bin/python -m pip install -r backend/requirements.txt"
+                sh ".venv/bin/python -m pip install pytest"
             }
         }
 
         stage("Run Tests") {
             steps {
-                sh "PYTHONPATH=backend pytest -v"
+                sh ".venv/bin/python -m pytest -v"
             }
         }
 
         stage("Build") {
             steps {
-                echo "Build completed successfully"
+                sh "echo 'TaskFlow build completed successfully'"
             }
         }
     }
