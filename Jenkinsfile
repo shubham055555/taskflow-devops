@@ -9,18 +9,15 @@ pipeline {
             }
         }
 
-        stage("Setup Python Environment") {
+        stage("Install Dependencies") {
             steps {
-                sh "python3 -m venv .venv"
-                sh ".venv/bin/python -m pip install --upgrade pip"
-                sh ".venv/bin/python -m pip install -r backend/requirements.txt"
-                sh ".venv/bin/python -m pip install pytest"
+                sh "python -m pip install -r backend/requirements.txt"
             }
         }
 
         stage("Run Tests") {
             steps {
-                sh ".venv/bin/python -m pytest -v"
+                sh "python -m pytest -v"
             }
         }
 
