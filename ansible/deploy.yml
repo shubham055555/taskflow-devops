@@ -1,0 +1,30 @@
+---
+- name: Deploy TaskFlow to Kubernetes
+  hosts: local
+  gather_facts: false
+
+  tasks:
+
+    - name: Apply ConfigMap
+      command: bash -c 'kubectl.exe apply -f "$(wslpath -w /mnt/c/Users/Krishna/taskflow-devops/k8s/configmap.yaml)"'
+
+    - name: Apply Secret
+      command: bash -c 'kubectl.exe apply -f "$(wslpath -w /mnt/c/Users/Krishna/taskflow-devops/k8s/secret.yaml)"'
+
+    - name: Apply Deployment
+      command: bash -c 'kubectl.exe apply -f "$(wslpath -w /mnt/c/Users/Krishna/taskflow-devops/k8s/deployment.yaml)"'
+
+    - name: Apply Service
+      command: bash -c 'kubectl.exe apply -f "$(wslpath -w /mnt/c/Users/Krishna/taskflow-devops/k8s/service.yaml)"'
+
+    - name: Wait for TaskFlow rollout
+      command: kubectl.exe rollout status deployment/taskflow --timeout=120s
+
+    - name: Show TaskFlow pods
+      command: kubectl.exe get pods -l app=taskflow
+      register: taskflow_pods
+      changed_when: false
+
+    - name: Display TaskFlow pods
+      debug:
+        var: taskflow_pods.stdout
