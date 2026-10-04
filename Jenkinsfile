@@ -9,11 +9,16 @@ pipeline {
             }
         }
 
-        stage('Environment Check') {
+        stage('Setup Python Dependencies') {
             steps {
-                sh 'python3 --version'
                 sh '''
-                    python3 -c 'import flask, flask_sqlalchemy, flask_cors, pytest; print("Dependencies OK")'
+                    python3 -m pip --version
+
+                    python3 -m pip install \
+                        --user \
+                        --break-system-packages \
+                        -r backend/requirements.txt \
+                        pytest
                 '''
             }
         }
