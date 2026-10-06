@@ -56,36 +56,20 @@ pipeline {
         stage('Kubernetes Diagnostics') {
     steps {
         sh '''
-            echo "=== Kubernetes server used by Jenkins ==="
-            kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}'
-            echo
-            echo "=== Kubernetes context ==="
-            kubectl config current-context
-            echo
-            echo "=== Kubeconfig location ==="
-            echo \
-            echo
+            echo "=== Jenkins environment ==="
+            whoami
+            echo "HOME=\C:\Users\Krishna"
+
+            echo "=== kubeconfig files ==="
+            ls -la \C:\Users\Krishna/.kube 2>/dev/null || true
+            ls -la /var/lib/jenkins/.kube 2>/dev/null || true
+
+            echo "=== kubectl ==="
+            kubectl version --client
+            kubectl config get-contexts || true
         '''
     }
 }
-
-stage('Deploy to Kubernetes') {
-            steps {
-                sh '''
-                    echo "Checking Kubernetes access..."
-                    kubectl version --client
-
-                    echo "Applying Kubernetes manifests..."
-                    kubectl apply -f k8s/configmap.yaml
-                    kubectl apply -f k8s/secret.yaml
-                    kubectl apply -f k8s/deployment.yaml
-                    kubectl apply -f k8s/service.yaml
-
-                    echo "Waiting for Kubernetes rollout..."
-                    kubectl rollout status deployment/taskflow --timeout=120s
-                '''
-            }
-        }
 
         stage('Verify Kubernetes Deployment') {
             steps {
@@ -113,4 +97,5 @@ stage('Deploy to Kubernetes') {
         }
     }
 }
+
 
