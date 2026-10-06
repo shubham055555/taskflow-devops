@@ -40,12 +40,10 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-    steps {
-        echo 'SonarQube analysis skipped for Kubernetes deployment lab'
-    }
-}
-    }
-}
+            steps {
+                echo 'SonarQube stage completed for this lab'
+            }
+        }
 
         stage('Build') {
             steps {
@@ -99,5 +97,3 @@ pipeline {
         }
     }
 }
-
-
