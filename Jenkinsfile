@@ -61,7 +61,7 @@ pipeline {
             echo "HOME=$HOME"
 
             echo "=== kubeconfig files ==="
-            ls -la \C:\Users\Krishna/.kube 2>/dev/null || true
+            ls -la $HOME/.kube 2>/dev/null || true
             ls -la /var/lib/jenkins/.kube 2>/dev/null || true
 
             echo "=== kubectl ==="
@@ -97,5 +97,6 @@ pipeline {
         }
     }
 }
+
 
 
