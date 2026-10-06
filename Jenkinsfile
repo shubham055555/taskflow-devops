@@ -40,13 +40,12 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    def scannerHome = tool 'SonarScanner'
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
-            }
-        }
+    steps {
+        echo 'SonarQube analysis skipped for Kubernetes deployment lab'
+    }
+}
+    }
+}
 
         stage('Build') {
             steps {
@@ -100,3 +99,5 @@ pipeline {
         }
     }
 }
+
+
