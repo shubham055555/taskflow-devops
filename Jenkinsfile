@@ -58,7 +58,7 @@ pipeline {
         sh '''
             echo "=== Jenkins environment ==="
             whoami
-            echo "HOME=\C:\Users\Krishna"
+            echo "HOME=$HOME"
 
             echo "=== kubeconfig files ==="
             ls -la \C:\Users\Krishna/.kube 2>/dev/null || true
