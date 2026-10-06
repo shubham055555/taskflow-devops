@@ -53,7 +53,23 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Kubernetes Diagnostics') {
+    steps {
+        sh '''
+            echo "=== Kubernetes server used by Jenkins ==="
+            kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}'
+            echo
+            echo "=== Kubernetes context ==="
+            kubectl config current-context
+            echo
+            echo "=== Kubeconfig location ==="
+            echo \
+            echo
+        '''
+    }
+}
+
+stage('Deploy to Kubernetes') {
             steps {
                 sh '''
                     echo "Checking Kubernetes access..."
@@ -97,3 +113,4 @@ pipeline {
         }
     }
 }
+
